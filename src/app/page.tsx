@@ -85,7 +85,7 @@ const StatisticCard = ({ label, value, accent }: { label: string; value: string;
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.45 }}
-    className="rounded-[28px] border border-white/10 bg-white/5 p-4 sm:p-5 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-xl hover:-translate-y-1 hover:border-[#d4af37]/30 hover:shadow-[0_30px_90px_rgba(212,175,55,0.18)] transition-all"
+    className="w-full rounded-[28px] border border-white/10 bg-white/5 p-4 sm:p-5 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-xl hover:-translate-y-1 hover:border-[#d4af37]/30 hover:shadow-[0_30px_90px_rgba(212,175,55,0.18)] transition-all"
   >
     <p className="text-xs uppercase tracking-[0.32em] text-muted">{label}</p>
     <p className={`mt-4 text-2xl font-semibold ${accent ? "text-[#d4af37]" : "text-foreground"}`}>{value}</p>
@@ -207,7 +207,7 @@ export default function HomePage() {
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-[0.34em] text-muted sm:text-xs">Gold API</p>
-                <p className="text-sm font-semibold">Premium spot pricing</p>
+                <p className="text-sm font-semibold">Updated gold price in kerala</p>
               </div>
             </div>
             <button
@@ -227,11 +227,11 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
-              className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-[0_28px_80px_rgba(0,0,0,0.24)] backdrop-blur-xl sm:p-5 min-h-[320px] lg:min-h-[360px]"
+              className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-[0_28px_80px_rgba(0,0,0,0.24)] backdrop-blur-xl sm:p-5 min-h-[320px] lg:min-h-[360px] flex flex-col items-start lg:items-center lg:justify-center"
             >
               <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                 <div className="max-w-2xl">
-                  <p className="text-[10px] uppercase tracking-[0.34em] text-muted">Today’s price</p>
+                  <p className="text-[10px] uppercase tracking-[0.34em] text-muted">Today's price</p>
                   <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl xl:text-5xl lg:text-4xl">
                     {loading ? "—" : formatPrice(currentPrice)}
                   </h1>
@@ -267,7 +267,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="mt-4 grid w-full grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
                 <StatisticCard label="Change" value={loading ? "—" : formatPrice(changeValue)} accent={changeValue > 0} />
                 <StatisticCard label="Yesterday" value={loading ? "—" : formatPrice(yesterdayPrice)} />
                 <StatisticCard label="Sovereign" value={loading ? "—" : formatPrice(sovereignPrice)} />
