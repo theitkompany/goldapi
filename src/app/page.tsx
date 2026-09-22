@@ -71,7 +71,7 @@ export default function HomePage() {
                 </div>
               </div>
             </section>
-            <div className="flex items-end justify-between pt-8">
+            <div className="flex items-end justify-between pt-2">
               <div><p className="text-sm text-[#9db59b]">Everything you need,</p><p className="mt-1 text-lg font-semibold text-[#edf8df]">all in one place.</p></div>
               <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs text-[#b8cdb7]">{TOOLS.length} tools</span>
             </div>
