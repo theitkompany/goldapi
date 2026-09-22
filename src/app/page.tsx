@@ -52,10 +52,10 @@ export default function HomePage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(135deg,#eff9df_0%,#cfe8b8_48%,#e5f4d2_100%)] text-[#17251a]">
-      <Silk speed={0.28} scale={1.25} color="#a9d18d" noiseIntensity={0.55} className="opacity-30" />
+    <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(145deg,#f4fbe9_0%,#d9edc5_48%,#edf8df_100%)] text-[#17251a]">
+      <Silk speed={0.22} scale={1.15} color="#b8d99b" noiseIntensity={0.42} className="opacity-24" />
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-6 sm:px-8 lg:px-12">
-        <header className="border-b border-[#294229]/20 py-6">
+        <header className="py-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#315c35]">Golden API</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#17251a] sm:text-3xl">Simple Tools. Instant Conversions.</h1>
         </header>
