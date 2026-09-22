@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "Live Gold price",
-  description: "Live gold price dashboard with 22K and 24K rates and sovereign pricing.",
-  keywords: ["gold price", "live gold price", "22K", "24K", "sovereign gold"],
+  title: "Tools & Calculators | Gold API",
+  description: "A modern collection of financial and precious metals calculators.",
+  keywords: ["calculators", "converters", "gold price", "currency converter", "financial tools"],
 };
 
 export const viewport = {
