@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Dock from "@/components/Dock";
+import MagicRings from "@/components/MagicRings";
+
+const UPI_ID = "saveen.salah@federal";
 
 type Tool = {
   id: string;
@@ -67,29 +71,19 @@ function ToolIcon({ icon }: { icon: string }) {
   return <span aria-hidden="true" className="text-xl font-bold text-[#b7f34b]">{icon}</span>;
 }
 
-function StarIcon({ filled }: { filled: boolean }) {
-  return (
-    <svg viewBox="0 0 24 24" className={`h-5 w-5 ${filled ? "fill-[#b7f34b] text-[#b7f34b]" : "text-[#7b8493]"}`} fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path strokeLinecap="round" strokeLinejoin="round" d="m12 3 2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.92 1.06-6.2L3 9.53l6.22-.9L12 3Z" />
-    </svg>
-  );
-}
-
-function BottomIcon({ name }: { name: "home" | "categories" | "favorites" | "settings" }) {
+function NavigationIcon({ name }: { name: "home" | "upi" | "about" }) {
   const paths = {
     home: "M3 10.8 12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.2Z",
-    categories: "M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z",
-    favorites: "m12 3 2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.92 1.06-6.2L3 9.53l6.22-.9L12 3Z",
-    settings: "M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm8.2-3.2a8.6 8.6 0 0 0-.1-1.2l2-1.55-2-3.46-2.35.95a8.7 8.7 0 0 0-2.05-1.2L15.35 3h-4l-.35 2.54a8.7 8.7 0 0 0-2.05 1.2L6.6 5.79l-2 3.46 2 1.55A8.6 8.6 0 0 0 6.5 12c0 .41.04.81.1 1.2l-2 1.55 2 3.46 2.35-.95c.63.5 1.32.9 2.05 1.2l.35 2.54h4l.35-2.54a8.7 8.7 0 0 0 2.05-1.2l2.35.95 2-3.46-2-1.55c.06-.39.1-.79.1-1.2Z",
+    upi: "M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm3 4h8M8 12h8M8 16h4",
+    about: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-10v6m0-9h.01",
   };
   return <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"><path d={paths[name]} /></svg>;
 }
 
 export default function HomePage() {
-  const [favorites, setFavorites] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("Home");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const visibleTools = activeTab === "Favorites" ? TOOLS.filter((tool) => favorites.includes(tool.id)) : TOOLS;
+  const [amount, setAmount] = useState("");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -101,9 +95,12 @@ export default function HomePage() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((current) => current.includes(id) ? current.filter((favorite) => favorite !== id) : [...current, id]);
-  };
+  const upiLink = `upi://pay?${new URLSearchParams({
+    pa: UPI_ID,
+    pn: "Golden API",
+    cu: "INR",
+    ...(amount && Number(amount) > 0 ? { am: amount } : {}),
+  }).toString()}`;
 
   return (
     <main className="min-h-screen bg-[#07090c] text-white transition-colors light:bg-[#f5f7fa] light:text-[#101318]">
@@ -114,7 +111,23 @@ export default function HomePage() {
             <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Simple Tools. Instant Conversions.</h1>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden h-12 w-12 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#d9ff85,#4c8b36_55%,#132517)] shadow-[0_0_28px_rgba(183,243,75,0.28)] sm:flex animate-[spin_12s_linear_infinite]" aria-hidden="true" />
+            <div className="hidden h-14 w-14 sm:block" aria-hidden="true">
+              <MagicRings
+                color="#b7f34b"
+                colorTwo="#d9ff85"
+                ringCount={4}
+                speed={0.8}
+                attenuation={12}
+                lineThickness={2}
+                baseRadius={0.22}
+                radiusStep={0.12}
+                scaleRate={0.08}
+                opacity={0.9}
+                noiseAmount={0.04}
+                hoverScale={1.12}
+                clickBurst
+              />
+            </div>
             <button type="button" onClick={() => setTheme((current) => current === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#11151b] text-lg text-[#b7f34b] transition hover:border-[#b7f34b]/50 light:bg-white light:text-[#182015]">
               {theme === "dark" ? "☼" : "☾"}
             </button>
@@ -124,15 +137,13 @@ export default function HomePage() {
         <div className="flex items-end justify-between pt-8">
           <div>
             <p className="text-sm text-[#7b8493]">Everything you need,</p>
-            <p className="mt-1 text-lg font-semibold">all in one place.</p>
+            <p className="mt-1 text-lg font-semibold">{activeTab === "Home" ? "all in one place." : activeTab === "UPI" ? "Pay securely with UPI." : "Built for simple, useful conversions."}</p>
           </div>
-          <span className="rounded-full border border-white/10 bg-[#11151b] px-3 py-1.5 text-xs text-[#9ba3af]">{visibleTools.length} tools</span>
+          {activeTab === "Home" ? <span className="rounded-full border border-white/10 bg-[#11151b] px-3 py-1.5 text-xs text-[#9ba3af]">{TOOLS.length} tools</span> : null}
         </div>
 
-        <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Available tools">
-          {visibleTools.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-white/10 py-14 text-center text-sm text-[#7b8493] lg:col-span-3">Tap the star on a tool to save it here.</div>
-          ) : visibleTools.map((tool) => (
+        {activeTab === "Home" ? <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Available tools">
+          {TOOLS.map((tool) => (
             <div key={tool.id} className="group flex min-h-[190px] items-start gap-3 rounded-2xl border border-white/[0.08] bg-[#101318] p-5 transition hover:border-[#b7f34b]/40 hover:bg-[#141920] light:border-black/10 light:bg-white light:hover:bg-[#fbfcfd]">
               <Link href={tool.href} className="flex min-w-0 flex-1 items-center gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b]">
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#1c331e] light:bg-[#e9f5dc]"><ToolIcon icon={tool.icon} /></span>
@@ -142,27 +153,41 @@ export default function HomePage() {
                   <span className="mt-2 inline-flex rounded-md bg-[#1b3020] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#b7f34b]">{tool.category}</span>
                 </span>
               </Link>
-              <button type="button" onClick={() => toggleFavorite(tool.id)} aria-label={`${favorites.includes(tool.id) ? "Remove" : "Add"} ${tool.title} ${favorites.includes(tool.id) ? "from" : "to"} favorites`} className="rounded-lg p-2 transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b]">
-                <StarIcon filled={favorites.includes(tool.id)} />
-              </button>
               <Link href={tool.href} aria-label={`Open ${tool.title}`} className="rounded-lg p-2 text-[#7b8493] transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b]">
                 <span aria-hidden="true" className="text-2xl leading-none">›</span>
               </Link>
             </div>
           ))}
-        </section>
+        </section> : activeTab === "UPI" ? (
+          <section className="mx-auto mt-8 w-full max-w-xl rounded-3xl border border-white/[0.08] bg-[#101318] p-6 sm:p-8" aria-labelledby="upi-title">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1c331e] text-xl font-bold text-[#b7f34b]">₹</div>
+            <h2 id="upi-title" className="mt-5 text-2xl font-bold">Pay via UPI</h2>
+            <p className="mt-2 text-sm leading-6 text-[#7b8493]">Open your preferred UPI app and pay directly. You do not need to copy the UPI ID.</p>
+            <p className="mt-5 rounded-xl border border-white/10 bg-[#0b0d10] px-4 py-3 font-mono text-sm text-[#b7f34b]">{UPI_ID}</p>
+            <label htmlFor="upi-amount" className="mt-6 block text-sm font-medium text-[#d9dee7]">Amount (optional)</label>
+            <input id="upi-amount" inputMode="decimal" min="1" step="0.01" type="number" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="Enter amount in INR" className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white outline-none focus:border-[#b7f34b]" />
+            <a href={upiLink} className="mt-5 flex w-full items-center justify-center rounded-xl bg-[#b7f34b] px-5 py-3 font-bold text-[#101318] transition hover:bg-[#cdf878]">Open UPI app</a>
+            <p className="mt-3 text-center text-xs text-[#697281]">Works on devices with a UPI app installed.</p>
+          </section>
+        ) : (
+          <section className="mx-auto mt-8 w-full max-w-xl rounded-3xl border border-white/[0.08] bg-[#101318] p-6 sm:p-8" aria-labelledby="about-title">
+            <h2 id="about-title" className="text-2xl font-bold">About Golden API</h2>
+            <p className="mt-3 text-sm leading-6 text-[#7b8493]">Simple tools for everyday price checks, conversions, and financial calculations. Live market data is used where available.</p>
+          </section>
+        )}
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-20 border-t border-white/[0.08] bg-[#0b0d10]/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl" aria-label="Main navigation">
-        <div className="mx-auto grid max-w-7xl grid-cols-4">
-          {(["Home", "Categories", "Favorites", "Settings"] as const).map((tab) => (
-            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`flex flex-col items-center gap-1 text-[11px] transition ${activeTab === tab ? "text-[#b7f34b]" : "text-[#697281] hover:text-white"}`}>
-              <BottomIcon name={tab.toLowerCase() as "home" | "categories" | "favorites" | "settings"} />
-              <span>{tab}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
+      <Dock
+        items={[
+          { label: "Home", icon: <NavigationIcon name="home" />, onClick: () => setActiveTab("Home"), className: activeTab === "Home" ? "dock-item-active" : "" },
+          { label: "UPI", icon: <NavigationIcon name="upi" />, onClick: () => setActiveTab("UPI"), className: activeTab === "UPI" ? "dock-item-active" : "" },
+          { label: "About", icon: <NavigationIcon name="about" />, onClick: () => setActiveTab("About"), className: activeTab === "About" ? "dock-item-active" : "" },
+        ]}
+        panelHeight={68}
+        baseItemSize={50}
+        magnification={70}
+        className="dock-panel-app"
+      />
     </main>
   );
 }
