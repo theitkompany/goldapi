@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import Dock from "@/components/Dock";
 import ParticleSphere from "@/components/ParticleSphere";
+import Silk from "@/components/Silk";
 
 const UPI_ID = "saveen.salah@federal";
 const TOOLS = [
@@ -25,6 +26,7 @@ function NavigationIcon({ name }: { name: "home" | "about" }) {
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<"Home" | "About">("Home");
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedDonation, setSelectedDonation] = useState("25");
   const [customDonation, setCustomDonation] = useState("");
   const [copied, setCopied] = useState<"id" | "uri" | null>(null);
@@ -50,36 +52,39 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#07090c] text-white">
-      <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-6 sm:px-8 lg:px-12">
-        <header className="border-b border-white/[0.08] py-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Golden API</p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Simple Tools. Instant Conversions.</h1>
+    <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(135deg,#dcefc1_0%,#c5e3b0_48%,#e5f4cf_100%)] text-[#17251a]">
+      <Silk speed={0.35} scale={1.4} color="#b8d99b" noiseIntensity={0.7} className="opacity-35" />
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-6 sm:px-8 lg:px-12">
+        <header className="border-b border-[#294229]/20 py-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#315c35]">Golden API</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#17251a] sm:text-3xl">Simple Tools. Instant Conversions.</h1>
         </header>
 
         {activeTab === "Home" ? (
           <>
-            <section className="relative mt-6 min-h-[250px] overflow-hidden rounded-3xl border border-white/[0.08] bg-[#05070d] px-6 py-8 sm:min-h-[300px] sm:px-10 lg:min-h-[340px]" aria-labelledby="hero-title">
+            <section className="relative mt-6 min-h-[270px] overflow-hidden rounded-3xl border border-[#294229]/20 bg-transparent px-6 py-8 sm:min-h-[330px] sm:px-10 lg:min-h-[380px]" aria-labelledby="hero-title">
               <div className="relative z-10 flex max-w-md flex-col justify-center sm:min-h-[250px] lg:min-h-[290px]">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Live market toolkit</p>
-                <h2 id="hero-title" className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">Make every number count.</h2>
-                <p className="mt-4 max-w-sm text-sm leading-6 text-[#9ba3af]">Explore fast, focused tools for precious metals, money, and everyday calculations.</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#315c35]">Live market toolkit</p>
+                <h2 id="hero-title" className="mt-3 text-3xl font-bold tracking-tight text-[#17251a] sm:text-4xl">Make every number count.</h2>
+                <p className="mt-4 max-w-sm text-sm leading-6 text-[#466248]">Explore fast, focused tools for precious metals, money, and everyday calculations.</p>
               </div>
               <div className="pointer-events-none absolute inset-y-0 right-[-4%] w-[62%] min-w-[270px] sm:right-[2%] sm:w-[52%] lg:right-[5%] lg:w-[42%]"><ParticleSphere /></div>
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_50%,rgba(255,255,255,0.08),transparent_32%),linear-gradient(90deg,#05070d_8%,rgba(5,7,13,0.84)_38%,transparent_78%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_50%,rgba(255,255,255,0.22),transparent_32%),linear-gradient(90deg,rgba(220,239,193,.8)_8%,rgba(220,239,193,.48)_38%,transparent_78%)]" />
             </section>
             <div className="flex items-end justify-between pt-8">
-              <div><p className="text-sm text-[#7b8493]">Everything you need,</p><p className="mt-1 text-lg font-semibold">all in one place.</p></div>
-              <span className="rounded-full border border-white/10 bg-[#11151b] px-3 py-1.5 text-xs text-[#9ba3af]">{TOOLS.length} tools</span>
+              <div><p className="text-sm text-[#466248]">Everything you need,</p><p className="mt-1 text-lg font-semibold text-[#17251a]">all in one place.</p></div>
+              <span className="rounded-full border border-[#294229]/20 bg-white/30 px-3 py-1.5 text-xs text-[#466248]">{TOOLS.length} tools</span>
             </div>
+            <label htmlFor="tool-search" className="sr-only">Search tools</label>
+            <input id="tool-search" placeholder="Search tools and calculators..." onChange={(event) => setSearchQuery(event.target.value)} className="mt-5 w-full rounded-2xl border border-[#294229]/20 bg-white/35 px-5 py-3 text-sm text-[#17251a] outline-none placeholder:text-[#66806b] focus:border-[#315c35]" />
             <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Available tools">
-              {TOOLS.map(([id, title, description, category, icon, href]) => (
-                <div key={id} className="group flex min-h-[190px] items-start gap-3 rounded-2xl border border-white/[0.08] bg-[#101318] p-5 transition hover:border-[#b7f34b]/40 hover:bg-[#141920]">
+              {TOOLS.filter(([, title, description, category]) => `${title} ${description} ${category}`.toLowerCase().includes(searchQuery.toLowerCase())).map(([id, title, description, category, icon, href]) => (
+                <div key={id} className="group flex min-h-[132px] items-start gap-3 rounded-2xl border border-[#294229]/20 bg-white/35 p-4 transition hover:border-[#315c35]/50 hover:bg-white/50">
                   <Link href={href} className="flex min-w-0 flex-1 items-center gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b]">
-                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#1c331e] text-xl font-bold text-[#b7f34b]">{icon}</span>
-                    <span className="min-w-0"><span className="block truncate font-semibold text-white">{title}</span><span className="mt-1 block truncate text-sm text-[#7b8493]">{description}</span><span className="mt-2 inline-flex rounded-md bg-[#1b3020] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#b7f34b]">{category}</span></span>
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#315c35] text-xl font-bold text-[#dcefc1]">{icon}</span>
+                    <span className="min-w-0"><span className="block truncate font-semibold text-[#17251a]">{title}</span><span className="mt-1 block truncate text-sm text-[#466248]">{description}</span><span className="mt-2 inline-flex rounded-md bg-[#c3dfa8] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#315c35]">{category}</span></span>
                   </Link>
-                  <Link href={href} aria-label={`Open ${title}`} className="rounded-lg p-2 text-2xl leading-none text-[#7b8493] hover:text-white">›</Link>
+                  <Link href={href} aria-label={`Open ${title}`} className="rounded-lg p-2 text-2xl leading-none text-[#466248] hover:text-[#17251a]">›</Link>
                 </div>
               ))}
             </section>

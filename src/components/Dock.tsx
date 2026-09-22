@@ -8,7 +8,7 @@ import {
   useTransform,
   type SpringOptions,
 } from "motion/react";
-import { Children, cloneElement, isValidElement, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Children, cloneElement, isValidElement, useEffect, useRef, useState, type ReactNode } from "react";
 import "./Dock.css";
 
 export type DockItemData = {
@@ -56,8 +56,8 @@ function DockItem({
     const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: baseItemSize };
     return value - rect.x - baseItemSize / 2;
   });
-  const targetSize = useTransform(mouseDistance, [-distance, 0, distance], [baseItemSize, magnification, baseItemSize]);
-  const size = useSpring(targetSize, spring);
+  const targetScale = useTransform(mouseDistance, [-distance, 0, distance], [1, magnification / baseItemSize, 1]);
+  const scale = useSpring(targetScale, spring);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter" || event.key === " ") {
@@ -69,7 +69,7 @@ function DockItem({
   return (
     <motion.div
       ref={ref}
-      style={{ width: size, height: size }}
+      style={{ width: baseItemSize, height: baseItemSize, scale }}
       onHoverStart={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
@@ -122,24 +122,17 @@ export default function Dock({
   baseItemSize = 50,
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
-  const isHovered = useMotionValue(0);
-  const maxHeight = useMemo(() => Math.max(dockHeight, magnification + magnification / 2 + 4), [magnification, dockHeight]);
-  const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
-  const height = useSpring(heightRow, spring);
-
   return (
-    <motion.div style={{ height, scrollbarWidth: "none" }} className="dock-outer">
+    <motion.div style={{ height: panelHeight, scrollbarWidth: "none" }} className="dock-outer">
       <motion.div
         onMouseMove={({ pageX }) => {
-          isHovered.set(1);
           mouseX.set(pageX);
         }}
         onMouseLeave={() => {
-          isHovered.set(0);
           mouseX.set(Infinity);
         }}
         className={`dock-panel ${className}`}
-        style={{ height: panelHeight }}
+        style={{ height: panelHeight, minHeight: panelHeight }}
         role="toolbar"
         aria-label="Application dock"
       >
