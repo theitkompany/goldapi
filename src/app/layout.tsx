@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "Tools & Calculators | Gold API",
+  title: "Golden Api",
   description: "A modern collection of financial and precious metals calculators.",
   keywords: ["calculators", "converters", "gold price", "currency converter", "financial tools"],
 };

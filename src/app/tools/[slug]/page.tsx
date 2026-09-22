@@ -1,5 +1,7 @@
 import Link from "next/link";
 import SilverCalculator from "./SilverCalculator";
+import InterestCalculator from "./InterestCalculator";
+import UnitConverter from "./UnitConverter";
 
 const TITLES: Record<string, { title: string; category: string }> = {
   "currency-converter": { title: "Currency Converter", category: "Financial" },
@@ -12,6 +14,8 @@ const TITLES: Record<string, { title: string; category: string }> = {
 export default async function PlaceholderTool({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   if (slug === "silver-precious-metals") return <SilverCalculator />;
+  if (slug === "interest-calculator") return <InterestCalculator />;
+  if (slug === "unit-converter") return <UnitConverter />;
   const tool = TITLES[slug] ?? { title: "Calculator", category: "Coming soon" };
 
   return (
