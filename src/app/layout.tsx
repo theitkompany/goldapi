@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   description: "A modern collection of financial and precious metals calculators.",
   keywords: ["calculators", "converters", "gold price", "currency converter", "financial tools"],
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
