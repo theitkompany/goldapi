@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Dock from "@/components/Dock";
-import MagicRings from "@/components/MagicRings";
+import ParticleSphere from "@/components/ParticleSphere";
 
 const UPI_ID = "saveen.salah@federal";
 
@@ -82,18 +82,7 @@ function NavigationIcon({ name }: { name: "home" | "upi" | "about" }) {
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("Home");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [amount, setAmount] = useState("");
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") setTheme("light");
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("light", theme === "light");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   const upiLink = `upi://pay?${new URLSearchParams({
     pa: UPI_ID,
@@ -103,36 +92,26 @@ export default function HomePage() {
   }).toString()}`;
 
   return (
-    <main className="min-h-screen bg-[#07090c] text-white transition-colors light:bg-[#f5f7fa] light:text-[#101318]">
+    <main className="min-h-screen bg-[#07090c] text-white">
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-24 sm:px-8 lg:px-12">
         <header className="flex items-center justify-between border-b border-white/[0.08] py-6">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Golden API</p>
             <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Simple Tools. Instant Conversions.</h1>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden h-14 w-14 sm:block" aria-hidden="true">
-              <MagicRings
-                color="#b7f34b"
-                colorTwo="#d9ff85"
-                ringCount={4}
-                speed={0.8}
-                attenuation={12}
-                lineThickness={2}
-                baseRadius={0.22}
-                radiusStep={0.12}
-                scaleRate={0.08}
-                opacity={0.9}
-                noiseAmount={0.04}
-                hoverScale={1.12}
-                clickBurst
-              />
-            </div>
-            <button type="button" onClick={() => setTheme((current) => current === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#11151b] text-lg text-[#b7f34b] transition hover:border-[#b7f34b]/50 light:bg-white light:text-[#182015]">
-              {theme === "dark" ? "☼" : "☾"}
-            </button>
-          </div>
         </header>
+
+        <section className="relative mt-6 min-h-[250px] overflow-hidden rounded-3xl border border-white/[0.08] bg-[#05070d] px-6 py-8 sm:min-h-[300px] sm:px-10 lg:min-h-[340px]" aria-labelledby="hero-title">
+          <div className="relative z-10 flex max-w-md flex-col justify-center sm:min-h-[250px] lg:min-h-[290px]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Live market toolkit</p>
+            <h2 id="hero-title" className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">Make every number count.</h2>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[#9ba3af]">Explore fast, focused tools for precious metals, money, and everyday calculations.</p>
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 right-[-4%] w-[62%] min-w-[270px] sm:right-[2%] sm:w-[52%] lg:right-[5%] lg:w-[42%]">
+            <ParticleSphere />
+          </div>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_50%,rgba(255,255,255,0.08),transparent_32%),linear-gradient(90deg,#05070d_8%,rgba(5,7,13,0.84)_38%,transparent_78%)]" />
+        </section>
 
         <div className="flex items-end justify-between pt-8">
           <div>
