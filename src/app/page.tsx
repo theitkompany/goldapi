@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Tool = {
   id: string;
@@ -53,6 +53,14 @@ const TOOLS: Tool[] = [
     icon: "▣",
     href: "/tools/loan-emi-calculator",
   },
+  {
+    id: "unit",
+    title: "Unit Converter",
+    description: "Quickly convert common weights and measurements",
+    category: "Utilities",
+    icon: "↔",
+    href: "/tools/unit-converter",
+  },
 ];
 
 function ToolIcon({ icon }: { icon: string }) {
@@ -80,21 +88,37 @@ function BottomIcon({ name }: { name: "home" | "categories" | "favorites" | "set
 export default function HomePage() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("Home");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const visibleTools = activeTab === "Favorites" ? TOOLS.filter((tool) => favorites.includes(tool.id)) : TOOLS;
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") setTheme("light");
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", theme === "light");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const toggleFavorite = (id: string) => {
     setFavorites((current) => current.includes(id) ? current.filter((favorite) => favorite !== id) : [...current, id]);
   };
 
   return (
-    <main className="min-h-screen bg-[#07090c] text-white">
-      <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col px-5 pb-24 sm:px-8">
+    <main className="min-h-screen bg-[#07090c] text-white transition-colors light:bg-[#f5f7fa] light:text-[#101318]">
+      <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-24 sm:px-8 lg:px-12">
         <header className="flex items-center justify-between border-b border-white/[0.08] py-6">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Gold API</p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Tools &amp; Calculators</h1>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Golden API</p>
+            <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Simple Tools. Instant Conversions.</h1>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#11151b] text-lg font-bold text-[#b7f34b]">G</div>
+          <div className="flex items-center gap-3">
+            <div className="hidden h-12 w-12 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#d9ff85,#4c8b36_55%,#132517)] shadow-[0_0_28px_rgba(183,243,75,0.28)] sm:flex animate-[spin_12s_linear_infinite]" aria-hidden="true" />
+            <button type="button" onClick={() => setTheme((current) => current === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#11151b] text-lg text-[#b7f34b] transition hover:border-[#b7f34b]/50 light:bg-white light:text-[#182015]">
+              {theme === "dark" ? "☼" : "☾"}
+            </button>
+          </div>
         </header>
 
         <div className="flex items-end justify-between pt-8">
@@ -105,13 +129,13 @@ export default function HomePage() {
           <span className="rounded-full border border-white/10 bg-[#11151b] px-3 py-1.5 text-xs text-[#9ba3af]">{visibleTools.length} tools</span>
         </div>
 
-        <section className="mt-6 space-y-3" aria-label="Available tools">
+        <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Available tools">
           {visibleTools.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-white/10 py-14 text-center text-sm text-[#7b8493]">Tap the star on a tool to save it here.</div>
+            <div className="rounded-2xl border border-dashed border-white/10 py-14 text-center text-sm text-[#7b8493] lg:col-span-3">Tap the star on a tool to save it here.</div>
           ) : visibleTools.map((tool) => (
-            <div key={tool.id} className="group flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-[#101318] p-3.5 transition hover:border-[#b7f34b]/40 hover:bg-[#141920]">
+            <div key={tool.id} className="group flex min-h-[190px] items-start gap-3 rounded-2xl border border-white/[0.08] bg-[#101318] p-5 transition hover:border-[#b7f34b]/40 hover:bg-[#141920] light:border-black/10 light:bg-white light:hover:bg-[#fbfcfd]">
               <Link href={tool.href} className="flex min-w-0 flex-1 items-center gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b]">
-                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#1c331e]"><ToolIcon icon={tool.icon} /></span>
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#1c331e] light:bg-[#e9f5dc]"><ToolIcon icon={tool.icon} /></span>
                 <span className="min-w-0">
                   <span className="block truncate font-semibold text-white">{tool.title}</span>
                   <span className="mt-1 block truncate text-sm text-[#7b8493]">{tool.description}</span>
@@ -130,7 +154,7 @@ export default function HomePage() {
       </div>
 
       <nav className="fixed bottom-0 left-0 right-0 z-20 border-t border-white/[0.08] bg-[#0b0d10]/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl" aria-label="Main navigation">
-        <div className="mx-auto grid max-w-2xl grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-4">
           {(["Home", "Categories", "Favorites", "Settings"] as const).map((tab) => (
             <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`flex flex-col items-center gap-1 text-[11px] transition ${activeTab === tab ? "text-[#b7f34b]" : "text-[#697281] hover:text-white"}`}>
               <BottomIcon name={tab.toLowerCase() as "home" | "categories" | "favorites" | "settings"} />

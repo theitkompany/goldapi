@@ -1,14 +1,17 @@
 import Link from "next/link";
+import SilverCalculator from "./SilverCalculator";
 
 const TITLES: Record<string, { title: string; category: string }> = {
   "currency-converter": { title: "Currency Converter", category: "Financial" },
   "silver-precious-metals": { title: "Silver & Precious Metals", category: "Precious Metals" },
   "interest-calculator": { title: "Interest Calculator", category: "Financial" },
   "loan-emi-calculator": { title: "Loan & EMI Calculator", category: "Financial" },
+  "unit-converter": { title: "Unit Converter", category: "Utilities" },
 };
 
 export default async function PlaceholderTool({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (slug === "silver-precious-metals") return <SilverCalculator />;
   const tool = TITLES[slug] ?? { title: "Calculator", category: "Coming soon" };
 
   return (
