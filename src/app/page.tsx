@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import Dock from "@/components/Dock";
+import GhostFibers from "@/components/GhostFibers";
 import ParticleSphere from "@/components/ParticleSphere";
-import Silk from "@/components/Silk";
 
 const UPI_ID = "saveen.salah@federal";
 const TOOLS = [
@@ -52,37 +52,39 @@ export default function HomePage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(145deg,#f4fbe9_0%,#d9edc5_48%,#edf8df_100%)] text-[#17251a]">
-      <Silk speed={0.22} scale={1.15} color="#b8d99b" noiseIntensity={0.42} className="opacity-24" />
+    <main className="relative min-h-screen overflow-hidden bg-[#07100a] text-[#edf8df]">
+      <GhostFibers color="#86a982" glowColor="#b7f34b" speed={0.2} scale={1.6} opacity={0.42} className="opacity-80" />
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-6 sm:px-8 lg:px-12">
-        <header className="py-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#315c35]">Golden API</p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#17251a] sm:text-3xl">Simple Tools. Instant Conversions.</h1>
+        <header className="flex items-center justify-between py-6">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Golden API</p>
+            <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#edf8df] sm:text-3xl">Simple Tools. Instant Conversions.</h1>
+          </div>
         </header>
 
         {activeTab === "Home" ? (
           <>
-            <section className="relative mt-3 h-[260px] overflow-hidden sm:h-[320px] lg:h-[360px]" aria-label="Animated particle sphere">
+            <section className="relative mt-3 h-[330px] overflow-visible sm:h-[400px] lg:h-[470px]" aria-label="Animated particle sphere">
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <div className="h-[290px] w-[290px] sm:h-[360px] sm:w-[360px] lg:h-[430px] lg:w-[430px]">
+                <div className="h-[285px] w-[285px] sm:h-[350px] sm:w-[350px] lg:h-[415px] lg:w-[415px]">
                   <ParticleSphere />
                 </div>
               </div>
             </section>
             <div className="flex items-end justify-between pt-8">
-              <div><p className="text-sm text-[#466248]">Everything you need,</p><p className="mt-1 text-lg font-semibold text-[#17251a]">all in one place.</p></div>
-              <span className="rounded-full border border-[#294229]/20 bg-white/30 px-3 py-1.5 text-xs text-[#466248]">{TOOLS.length} tools</span>
+              <div><p className="text-sm text-[#9db59b]">Everything you need,</p><p className="mt-1 text-lg font-semibold text-[#edf8df]">all in one place.</p></div>
+              <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs text-[#b8cdb7]">{TOOLS.length} tools</span>
             </div>
             <label htmlFor="tool-search" className="sr-only">Search tools</label>
-            <input id="tool-search" placeholder="Search tools and calculators..." onChange={(event) => setSearchQuery(event.target.value)} className="mt-5 w-full rounded-2xl border border-[#294229]/20 bg-white/35 px-5 py-3 text-sm text-[#17251a] outline-none placeholder:text-[#66806b] focus:border-[#315c35]" />
+            <input id="tool-search" placeholder="Search tools and calculators..." onChange={(event) => setSearchQuery(event.target.value)} className="mt-5 w-full rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm text-white outline-none placeholder:text-[#9db59b] focus:border-[#b7f34b]" />
             <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Available tools">
               {TOOLS.filter(([, title, description, category]) => `${title} ${description} ${category}`.toLowerCase().includes(searchQuery.toLowerCase())).map(([id, title, description, category, icon, href]) => (
-                <div key={id} className="group relative flex min-h-[132px] items-center justify-center rounded-2xl border border-[#294229]/20 bg-white/35 p-4 transition hover:border-[#315c35]/50 hover:bg-white/50">
+                <div key={id} className="group relative flex min-h-[132px] items-center justify-center rounded-2xl border border-white/10 bg-white/10 p-4 transition hover:border-[#b7f34b]/50 hover:bg-white/15">
                   <Link href={href} className="flex min-w-0 flex-col items-center justify-center gap-2 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b]">
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#315c35] text-xl font-bold text-[#dcefc1]">{icon}</span>
-                    <span className="min-w-0"><span className="block truncate font-semibold text-[#17251a]">{title}</span><span className="mt-1 block max-w-[220px] truncate text-sm text-[#466248]">{description}</span><span className="mt-1 inline-flex rounded-md bg-[#c3dfa8] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#315c35]">{category}</span></span>
+                    <span className="min-w-0"><span className="block truncate font-semibold text-[#edf8df]">{title}</span><span className="mt-1 block max-w-[220px] truncate text-sm text-[#b8cdb7]">{description}</span><span className="mt-1 inline-flex rounded-md bg-[#c3dfa8] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#315c35]">{category}</span></span>
                   </Link>
-                  <Link href={href} aria-label={`Open ${title}`} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-2xl leading-none text-[#466248] hover:text-[#17251a]">›</Link>
+                  <Link href={href} aria-label={`Open ${title}`} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-2xl leading-none text-[#b8cdb7] hover:text-[#b7f34b]">›</Link>
                 </div>
               ))}
             </section>

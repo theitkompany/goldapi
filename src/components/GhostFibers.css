@@ -1,10 +1,11 @@
-.silk-container {
+.ghost-fibers-container {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
 }
-.silk-container canvas {
+
+.ghost-fibers-container canvas {
   display: block;
   width: 100%;
   height: 100%;

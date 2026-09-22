@@ -57,19 +57,6 @@ function formatUpdateTime(value: string) {
   });
 }
 
-const SunIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="5" />
-    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-  </svg>
-);
-
-const MoonIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-  </svg>
-);
-
 const RefreshIcon = ({ rotating }: { rotating: boolean }) => (
   <motion.span animate={rotating ? { rotate: 360 } : { rotate: 0 }} transition={{ duration: 0.75, ease: "easeInOut" }}>
     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -96,7 +83,6 @@ const StatisticCard = ({ label, value, accent }: { label: string; value: string;
 export default function HomePage() {
   const [prices, setPrices] = useState<PriceResponse | null>(null);
   const [selectedPurity, setSelectedPurity] = useState<Purity>("22K");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [justUpdated, setJustUpdated] = useState(false);
@@ -114,26 +100,6 @@ export default function HomePage() {
     () => (yesterdayPrice > 0 ? currentPrice - yesterdayPrice : 0),
     [currentPrice, yesterdayPrice]
   );
-
-  const applyTheme = (mode: "dark" | "light") => {
-    if (typeof document !== "undefined") {
-      document.documentElement.classList.toggle("light", mode === "light");
-    }
-  };
-
-  useEffect(() => {
-    const storedTheme = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
-    const initialTheme = storedTheme === "light" ? "light" : "dark";
-    setTheme(initialTheme);
-    applyTheme(initialTheme);
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    localStorage.setItem("theme", nextTheme);
-    applyTheme(nextTheme);
-  };
 
   const fetchPrices = async () => {
     setLoading(true);
@@ -218,14 +184,6 @@ export default function HomePage() {
                 <p className="text-sm font-semibold">Updated gold price in kerala</p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-foreground transition-all hover:border-[#d4af37]/40 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37] sm:h-12 sm:w-12"
-            >
-              {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-            </button>
           </div>
         </motion.header>
 
