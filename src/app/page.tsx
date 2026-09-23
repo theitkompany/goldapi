@@ -54,8 +54,8 @@ export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#07100a] text-[#edf8df]">
       <GhostFibers color="#86a982" glowColor="#b7f34b" speed={0.2} scale={1.6} opacity={0.42} className="opacity-80" />
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-6 sm:px-8 lg:px-12">
-        <header className="flex items-center justify-between py-6">
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-28 sm:px-8 lg:px-12">
+        <header className="flex items-center justify-between py-3 sm:py-6">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Golden API</p>
             <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#edf8df] sm:text-3xl">Simple Tools. Instant Conversions.</h1>
@@ -64,7 +64,7 @@ export default function HomePage() {
 
         {activeTab === "Home" ? (
           <>
-            <section className="relative mt-3 h-[330px] overflow-visible sm:h-[400px] lg:h-[470px]" aria-label="Animated particle sphere">
+            <section className="relative mt-0 h-[280px] overflow-visible sm:mt-3 sm:h-[400px] lg:h-[470px]" aria-label="Animated particle sphere">
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                 <div className="h-[285px] w-[285px] sm:h-[350px] sm:w-[350px] lg:h-[415px] lg:w-[415px]">
                   <ParticleSphere />
@@ -77,7 +77,7 @@ export default function HomePage() {
             </div>
             <label htmlFor="tool-search" className="sr-only">Search tools</label>
             <input id="tool-search" placeholder="Search tools and calculators..." onChange={(event) => setSearchQuery(event.target.value)} className="mt-5 w-full rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm text-white outline-none placeholder:text-[#9db59b] focus:border-[#b7f34b]" />
-            <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Available tools">
+            <section className="relative z-10 -mt-3 grid grid-cols-1 gap-4 sm:mt-6 sm:grid-cols-2 lg:grid-cols-3" aria-label="Available tools">
               {TOOLS.filter(([, title, description, category]) => `${title} ${description} ${category}`.toLowerCase().includes(searchQuery.toLowerCase())).map(([id, title, description, category, icon, href]) => (
                 <div key={id} className="group relative flex min-h-[132px] items-center justify-center rounded-2xl border border-white/10 bg-white/10 p-4 transition hover:border-[#b7f34b]/50 hover:bg-white/15">
                   <Link href={href} className="flex min-w-0 flex-col items-center justify-center gap-2 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b]">

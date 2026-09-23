@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { readHistoryStore, updateHistoryStore } from "./historyStorage";
 
 const MALABAR_URL =
   "https://www.malabargoldanddiamonds.com/graphql-magento?query=query%20getMetalRate($filter%3A%20MetalRateFilterInput)%20%7B%20getMetalRate(filter%3A%20$filter)%20%7B%20items%20%7B%20entry_date%20entry_time%20purity%20unit%20rate%20country%20state%20%7D%20%7D%20%7D&variables=%7B%22filter%22%3A%7B%22metal_type%22%3A%22gold%22,%22country%22:%22India%22%7D%7D";
@@ -23,13 +22,6 @@ type GoldApiResponse = {
   updatedDate: string;
   updatedTime: string;
   rates: {
-    "18k": number;
-    "22k": number;
-    "24k": number;
-  };
-  previousDate: string;
-  previousTime: string;
-  previousRates: {
     "18k": number;
     "22k": number;
     "24k": number;
@@ -82,29 +74,11 @@ export async function GET() {
       }
     }
 
-    const previousStore = await readHistoryStore();
-    const previous = previousStore.previous;
-
     const payload: GoldApiResponse = {
       updatedDate,
       updatedTime,
       rates,
-      previousDate: previous?.date ?? "",
-      previousTime: previous?.updatedTime ?? "",
-      previousRates: previous?.rates ?? {
-        "18k": 0,
-        "22k": 0,
-        "24k": 0,
-      },
     };
-
-    if (updatedDate && updatedTime) {
-      await updateHistoryStore({
-        date: updatedDate,
-        updatedTime,
-        rates,
-      });
-    }
 
     return NextResponse.json(payload);
   } catch (error) {

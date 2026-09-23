@@ -1,19 +1,24 @@
 .dock-outer {
-  position: relative;
-  margin: 2rem 0 0;
+  position: fixed;
+  z-index: 50;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
-  max-width: 100%;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  pointer-events: none;
 }
 
 .dock-panel {
   position: relative;
-  z-index: 1;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: min(25rem, calc(100vw - 2rem));
+  width: min(25rem, 100%);
   gap: 1rem;
   border-radius: 1rem;
   background: rgba(24, 45, 27, 0.58);
@@ -22,6 +27,19 @@
   box-shadow: 0 16px 36px rgba(31, 71, 36, 0.2);
   backdrop-filter: blur(18px) saturate(135%);
   -webkit-backdrop-filter: blur(18px) saturate(135%);
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  .dock-outer {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .dock-panel {
+    width: 100%;
+    border-radius: 1rem 1rem 0 0;
+  }
 }
 
 .dock-item {

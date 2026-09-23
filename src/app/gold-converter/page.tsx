@@ -9,27 +9,13 @@ type Purity = (typeof PURITIES)[number];
 
 type PriceResponse = {
   prices: { "24K": number; "22K": number; "18K": number };
-  previousPrices: { "24K": number; "22K": number; "18K": number };
-  lastUpdated: string;
   updatedTime: string;
-  change: number;
-  changePercent: number;
-  high: number;
-  low: number;
-  yesterday: number;
 };
 
 type GoldApiResponse = {
   updatedDate: string;
   updatedTime: string;
   rates: {
-    "18k": number;
-    "22k": number;
-    "24k": number;
-  };
-  previousDate: string;
-  previousTime: string;
-  previousRates: {
     "18k": number;
     "22k": number;
     "24k": number;
@@ -42,10 +28,6 @@ function formatPrice(value: number) {
     currency: "INR",
     maximumFractionDigits: 0,
   }).format(value);
-}
-
-function formatPercent(value: number) {
-  return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
 }
 
 function formatUpdateTime(value: string) {
@@ -91,15 +73,7 @@ export default function HomePage() {
     () => (prices ? prices.prices[selectedPurity] : 0),
     [prices, selectedPurity]
   );
-  const yesterdayPrice = useMemo(
-    () => (prices ? prices.previousPrices[selectedPurity] : 0),
-    [prices, selectedPurity]
-  );
   const sovereignPrice = useMemo(() => currentPrice * 8, [currentPrice]);
-  const changeValue = useMemo(
-    () => (yesterdayPrice > 0 ? currentPrice - yesterdayPrice : 0),
-    [currentPrice, yesterdayPrice]
-  );
 
   const fetchPrices = async () => {
     setLoading(true);
@@ -113,25 +87,13 @@ export default function HomePage() {
       }
 
       const data = (await response.json()) as GoldApiResponse;
-      const selectedKey = selectedPurity.toLowerCase() as keyof GoldApiResponse["rates"];
       const transformed: PriceResponse = {
         prices: {
           "18K": data.rates["18k"],
           "22K": data.rates["22k"],
           "24K": data.rates["24k"],
         },
-        previousPrices: {
-          "18K": data.previousRates["18k"],
-          "22K": data.previousRates["22k"],
-          "24K": data.previousRates["24k"],
-        },
-        lastUpdated: data.updatedDate ? `${data.updatedDate}T${data.updatedTime}` : "",
         updatedTime: data.updatedTime,
-        change: 0,
-        changePercent: 0,
-        high: 0,
-        low: 0,
-        yesterday: data.previousRates[selectedKey] ?? 0,
       };
 
       setPrices(transformed);
@@ -233,9 +195,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="mt-4 grid w-full grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
-                <StatisticCard label="Change" value={loading ? "—" : formatPrice(changeValue)} accent={changeValue > 0} />
-                <StatisticCard label="Yesterday" value={loading ? "—" : formatPrice(yesterdayPrice)} />
+              <div className="mt-4 grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                 <StatisticCard label="Sovereign" value={loading ? "—" : formatPrice(sovereignPrice)} />
                 <StatisticCard label="Updated" value={loading ? "Loading" : justUpdated ? "Just now" : prices?.updatedTime ?? "—"} />
               </div>
