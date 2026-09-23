@@ -19,8 +19,7 @@ varying vec2 vUv;
 void main() {
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`;
+}`;
 
 const fragmentShader = `
 precision highp float;
@@ -31,7 +30,6 @@ uniform float uTime;
 uniform float uSpeed;
 uniform float uScale;
 uniform float uOpacity;
-uniform float uAspect;
 uniform vec3 uColor;
 uniform vec3 uGlowColor;
 
@@ -55,13 +53,9 @@ float fiber(vec2 p, float offset, float frequency) {
 
 void main() {
   vec2 p = vUv * 2.0 - 1.0;
-
-  // Correct for the canvas/container aspect ratio
-  p.x *= uAspect;
   p.x *= uScale;
 
   float time = uTime * uSpeed;
-
   float field = 0.0;
   float glow = 0.0;
 
@@ -132,7 +126,6 @@ export default function GhostFibers({
       return;
     }
 
-    // Prevent high-DPI devices from creating an unnecessarily huge canvas
     renderer.setPixelRatio(
       Math.min(window.devicePixelRatio, 1.5)
     );
@@ -171,10 +164,6 @@ export default function GhostFibers({
         value: opacity,
       },
 
-      uAspect: {
-        value: 1,
-      },
-
       uColor: {
         value: new THREE.Color(color),
       },
@@ -192,29 +181,19 @@ export default function GhostFibers({
       depthWrite: false,
     });
 
-    const geometry = new THREE.PlaneGeometry(1, 1);
-
     const mesh = new THREE.Mesh(
-      geometry,
+      new THREE.PlaneGeometry(1, 1),
       material
     );
 
     scene.add(mesh);
 
     const resize = () => {
-      const width = mount.clientWidth;
-      const height = mount.clientHeight;
-
-      if (width === 0 || height === 0) return;
-
       renderer.setSize(
-        width,
-        height,
+        mount.clientWidth,
+        mount.clientHeight,
         false
       );
-
-      // Tell the shader about the actual container aspect ratio
-      uniforms.uAspect.value = width / height;
     };
 
     resize();
@@ -229,17 +208,13 @@ export default function GhostFibers({
     const animate = (time: number) => {
       frame = requestAnimationFrame(animate);
 
-      uniforms.uTime.value +=
-        last
-          ? (time - last) * 0.001
-          : 0;
+      uniforms.uTime.value += last
+        ? (time - last) * 0.001
+        : 0;
 
       last = time;
 
-      renderer.render(
-        scene,
-        camera
-      );
+      renderer.render(scene, camera);
     };
 
     frame = requestAnimationFrame(animate);
@@ -249,18 +224,12 @@ export default function GhostFibers({
 
       observer.disconnect();
 
-      geometry.dispose();
+      mesh.geometry.dispose();
       material.dispose();
       renderer.dispose();
 
-      if (
-        mount.contains(
-          renderer.domElement
-        )
-      ) {
-        mount.removeChild(
-          renderer.domElement
-        );
+      if (mount.contains(renderer.domElement)) {
+        mount.removeChild(renderer.domElement);
       }
     };
   }, [

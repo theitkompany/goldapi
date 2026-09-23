@@ -11,6 +11,10 @@
   margin: 0;
   padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
   pointer-events: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease;
+  visibility: visible;
 }
 
 .dock-panel {
@@ -34,6 +38,12 @@
   .dock-outer {
     padding-right: 0;
     padding-left: 0;
+  }
+
+  .dock-outer.dock-hidden {
+    opacity: 0;
+    transform: translateY(110%);
+    visibility: hidden;
   }
 
   .dock-panel {

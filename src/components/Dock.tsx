@@ -122,8 +122,60 @@ export default function Dock({
   baseItemSize = 50,
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
+  const [isMobileVisible, setIsMobileVisible] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    let hideTimer: number | undefined;
+    let frame = 0;
+
+    const clearHideTimer = () => {
+      if (hideTimer !== undefined) {
+        window.clearTimeout(hideTimer);
+        hideTimer = undefined;
+      }
+    };
+
+    const scheduleHide = () => {
+      clearHideTimer();
+      hideTimer = window.setTimeout(() => setIsMobileVisible(false), 1400);
+    };
+
+    const handleScroll = () => {
+      if (!mediaQuery.matches) return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        setIsMobileVisible(true);
+        scheduleHide();
+      });
+    };
+
+    const handleViewportChange = () => {
+      if (!mediaQuery.matches) {
+        clearHideTimer();
+        setIsMobileVisible(true);
+      } else {
+        setIsMobileVisible(false);
+      }
+    };
+
+    handleViewportChange();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    mediaQuery.addEventListener("change", handleViewportChange);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      clearHideTimer();
+      window.removeEventListener("scroll", handleScroll);
+      mediaQuery.removeEventListener("change", handleViewportChange);
+    };
+  }, []);
+
   return (
-    <motion.div style={{ height: panelHeight, scrollbarWidth: "none" }} className="dock-outer">
+    <motion.div
+      style={{ height: panelHeight, scrollbarWidth: "none" }}
+      className={`dock-outer ${isMobileVisible ? "dock-visible" : "dock-hidden"}`}
+    >
       <motion.div
         onMouseMove={({ pageX }) => {
           mouseX.set(pageX);
