@@ -29,13 +29,13 @@ export default function SilverCalculator() {
   const total = silver && Number.isFinite(amount) ? amount * silver.price : 0;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#07090c] px-5 py-10 text-white">
-      <section className="w-full max-w-xl rounded-3xl border border-white/[0.08] bg-[#101318] p-6 sm:p-8">
+    <main className="flex min-h-screen items-center justify-center bg-[#07090c] px-4 py-8 sm:px-5 sm:py-10 text-white">
+      <section className="w-full max-w-xl rounded-2xl sm:rounded-3xl border border-white/[0.08] bg-[#101318] p-5 sm:p-8">
         <Link href="/" className="text-sm text-[#b7f34b] hover:underline">← All tools</Link>
-        <span className="mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Precious Metals</span>
-        <h1 className="mt-4 text-3xl font-bold">Silver Converter</h1>
+        <span className="mt-6 sm:mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Precious Metals</span>
+        <h1 className="mt-3 sm:mt-4 text-2xl sm:text-3xl font-bold">Silver Converter</h1>
         <p className="mt-2 text-sm text-[#7b8493]">Calculate silver value using the current live INR price per gram.</p>
-        <div className="mt-8 rounded-2xl border border-white/10 bg-[#0b0d10] p-5">
+        <div className="mt-6 sm:mt-8 rounded-2xl border border-white/10 bg-[#0b0d10] p-4 sm:p-5">
           <div className="flex items-center justify-between text-sm text-[#9ba3af]">
             <span>Live silver sell price</span>
             <span className="font-semibold text-[#b7f34b]">{silver ? `₹${silver.price.toFixed(2)} / ${silver.unit}` : "Loading..."}</span>

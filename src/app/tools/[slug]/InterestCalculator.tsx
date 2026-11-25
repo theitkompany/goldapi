@@ -40,13 +40,13 @@ export default function InterestCalculator() {
   }, [principal, rate, time, timeUnit, frequency, mode]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#07090c] px-5 py-10 text-white">
-      <section className="w-full max-w-2xl rounded-3xl border border-white/[0.08] bg-[#101318] p-6 sm:p-8">
+    <main className="flex min-h-screen items-center justify-center bg-[#07090c] px-4 py-8 sm:px-5 sm:py-10 text-white">
+      <section className="w-full max-w-2xl rounded-2xl sm:rounded-3xl border border-white/[0.08] bg-[#101318] p-5 sm:p-8">
         <Link href="/" className="text-sm text-[#b7f34b] hover:underline">← All tools</Link>
-        <span className="mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Financial</span>
-        <h1 className="mt-4 text-3xl font-bold">Interest Calculator</h1>
+        <span className="mt-6 sm:mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Financial</span>
+        <h1 className="mt-3 sm:mt-4 text-2xl sm:text-3xl font-bold">Interest Calculator</h1>
         <p className="mt-2 text-sm text-[#7b8493]">Compare simple and compound interest with Indian-number formatting.</p>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+        <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-5 sm:grid-cols-2">
           <label className="text-sm text-[#d9dee7]">Calculation mode
             <select value={mode} onChange={(e) => setMode(e.target.value as "simple" | "compound")} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white">
               <option value="simple">Simple interest</option><option value="compound">Compound interest</option>

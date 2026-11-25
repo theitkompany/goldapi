@@ -114,13 +114,6 @@ export default function HomePage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
-      <Link
-        href="/"
-        className="fixed left-4 top-4 z-30 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-2 text-xs font-semibold text-foreground backdrop-blur-xl transition hover:border-[#d4af37]/40 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-[#d4af37]"
-      >
-        <span aria-hidden="true" className="text-base leading-none">←</span>
-        All tools
-      </Link>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="hidden sm:block absolute left-[-12%] top-10 h-96 w-96 rounded-full bg-[#d4af37]/25 blur-3xl" />
         <div className="hidden sm:block absolute right-[-18%] top-1/4 h-[380px] w-[380px] rounded-full bg-white/10 blur-3xl" />
@@ -134,20 +127,30 @@ export default function HomePage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, ease: "easeOut" }}
-            className="sticky top-0 z-20 mb-3 rounded-[28px] border border-white/10 bg-black/40 px-4 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.14)] backdrop-blur-xl backdrop-saturate-150 sm:px-5 sm:py-4"
+            className="sticky top-0 z-20 mb-3 rounded-2xl sm:rounded-[28px] border border-white/10 bg-black/50 px-3 py-2.5 shadow-[0_18px_40px_rgba(0,0,0,0.14)] backdrop-blur-xl backdrop-saturate-150 sm:px-5 sm:py-4"
           >
-          <div className="flex items-center justify-between gap-2 sm:gap-3">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-3xl bg-white/10 text-lg font-semibold text-[#d4af37] shadow-[inset_0_0_0_1px_rgba(212,175,55,0.14)] sm:h-12 sm:w-12 sm:text-2xl">
-                G
+            <div className="flex items-center justify-between gap-2 sm:gap-3">
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <Link
+                  href="/"
+                  aria-label="Back to all tools"
+                  className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-2xl sm:rounded-3xl bg-white/10 text-base font-semibold text-[#d4af37] shadow-[inset_0_0_0_1px_rgba(212,175,55,0.14)] transition hover:bg-white/20 hover:text-white"
+                >
+                  ←
+                </Link>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.34em] text-muted sm:text-xs">Gold API</p>
+                  <p className="text-xs sm:text-sm font-semibold">Updated gold price in kerala</p>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.34em] text-muted sm:text-xs">Gold API</p>
-                <p className="text-sm font-semibold">Updated gold price in kerala</p>
-              </div>
+              <Link
+                href="/"
+                className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-foreground transition hover:border-[#d4af37]/40 hover:bg-white/10"
+              >
+                All tools
+              </Link>
             </div>
-          </div>
-        </motion.header>
+          </motion.header>
 
         <div className="grid gap-2 xl:grid-cols-1">
           <section className="space-y-4 sm:space-y-5">
@@ -168,14 +171,14 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <div className="grid w-full gap-2 rounded-[28px] border border-white/10 bg-black/20 p-2 xl:max-w-[26rem]">
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-[repeat(3,minmax(0,1fr))_auto]">
+                <div className="grid w-full gap-2 rounded-2xl sm:rounded-[28px] border border-white/10 bg-black/20 p-2 xl:max-w-[26rem]">
+                  <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-[repeat(3,minmax(0,1fr))_auto] sm:gap-2">
                     {PURITIES.map((purity) => (
                       <button
                         key={purity}
                         type="button"
                         onClick={() => setSelectedPurity(purity)}
-                        className={`rounded-[20px] px-3 py-2 text-xs font-semibold transition-all ${
+                        className={`rounded-xl sm:rounded-[20px] px-2.5 py-2 text-xs font-semibold transition-all ${
                           selectedPurity === purity
                             ? "bg-[#d4af37] text-black shadow-[0_18px_45px_rgba(212,175,55,0.22)]"
                             : "bg-white/5 text-foreground hover:bg-white/10"
@@ -187,7 +190,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={fetchPrices}
-                      className="inline-flex aspect-square h-10 items-center justify-center rounded-[20px] border border-white/10 bg-white/5 text-foreground transition-all hover:border-[#d4af37]/30 hover:bg-white/10"
+                      className="inline-flex aspect-square h-10 items-center justify-center rounded-xl sm:rounded-[20px] border border-white/10 bg-white/5 text-foreground transition-all hover:border-[#d4af37]/30 hover:bg-white/10"
                     >
                       <RefreshIcon rotating={loading} />
                     </button>
