@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import Dock from "@/components/Dock";
-import GhostFibers from "@/components/GhostFibers";
+import Grainient from "@/components/Grainient";
 import ParticleSphere from "@/components/ParticleSphere";
 
 const UPI_ID = "saveen.salah@federal";
