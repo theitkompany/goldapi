@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import Dock from "@/components/Dock";
-import Grainient from "@/components/Grainient";
-import ParticleSphere from "@/components/ParticleSphere";
 
 const UPI_ID = "saveen.salah@federal";
 const TOOLS = [
@@ -52,8 +50,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#07100a] text-[#edf8df]">
-      <GhostFibers color="#86a982" glowColor="#b7f34b" speed={0.2} scale={1.6} opacity={0.42} className="ghost-fibers-mobile-bounded opacity-80" />
+    <main className="relative min-h-screen overflow-hidden text-[#edf8df]">
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-24 sm:px-8 sm:pb-28 lg:px-12">
         <header className="flex items-center justify-between py-3 sm:py-6">
           <div>
@@ -64,14 +61,7 @@ export default function HomePage() {
 
         {activeTab === "Home" ? (
           <>
-            <section className="relative z-0 mt-0 h-0 overflow-visible sm:mt-3 sm:h-[400px] lg:h-[470px]" aria-label="Animated particle sphere">
-              <div className="pointer-events-none absolute left-1/2 top-[-50px] z-0 flex -translate-x-1/2 items-center justify-center opacity-40 sm:opacity-100 sm:inset-0 sm:translate-x-0">
-                <div className="h-[200px] w-[200px] sm:h-[350px] sm:w-[350px] lg:h-[415px] lg:w-[415px]">
-                  <ParticleSphere />
-                </div>
-              </div>
-            </section>
-            <div className="relative z-10 flex items-end justify-between pt-2">
+            <div className="relative z-10 flex items-end justify-between pt-2 sm:pt-4">
               <div>
                 <p className="text-xs sm:text-sm text-[#9db59b]">Everything you need,</p>
                 <p className="mt-0.5 sm:mt-1 text-base sm:text-lg font-semibold text-[#edf8df]">all in one place.</p>

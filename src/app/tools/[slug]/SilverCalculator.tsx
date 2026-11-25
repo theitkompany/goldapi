@@ -29,8 +29,8 @@ export default function SilverCalculator() {
   const total = silver && Number.isFinite(amount) ? amount * silver.price : 0;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#07090c] px-4 py-8 sm:px-5 sm:py-10 text-white">
-      <section className="w-full max-w-xl rounded-2xl sm:rounded-3xl border border-white/[0.08] bg-[#101318] p-5 sm:p-8">
+    <main className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-5 sm:py-10 text-white">
+      <section className="w-full max-w-xl rounded-2xl sm:rounded-3xl border border-white/10 bg-black/45 p-5 sm:p-8 backdrop-blur-2xl shadow-[0_28px_80px_rgba(0,0,0,0.35)]">
         <Link href="/" className="text-sm text-[#b7f34b] hover:underline">← All tools</Link>
         <span className="mt-6 sm:mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Precious Metals</span>
         <h1 className="mt-3 sm:mt-4 text-2xl sm:text-3xl font-bold">Silver Converter</h1>

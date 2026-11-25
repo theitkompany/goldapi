@@ -47,7 +47,7 @@ export default function UnitConverter() {
   const swap = () => { setFrom(to); setTo(from); };
   const clear = () => setValue("");
 
-  return <main className="flex min-h-screen items-center justify-center bg-[#07090c] px-4 py-8 sm:px-5 sm:py-10 text-white"><section className="w-full max-w-2xl rounded-2xl sm:rounded-3xl border border-white/[0.08] bg-[#101318] p-5 sm:p-8">
+  return <main className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-5 sm:py-10 text-white"><section className="w-full max-w-2xl rounded-2xl sm:rounded-3xl border border-white/10 bg-black/45 p-5 sm:p-8 backdrop-blur-2xl shadow-[0_28px_80px_rgba(0,0,0,0.35)]">
     <Link href="/" className="text-sm text-[#b7f34b] hover:underline">← All tools</Link><span className="mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Utilities</span><h1 className="mt-4 text-2xl sm:text-3xl font-bold">Unit Converter</h1><p className="mt-2 text-sm text-[#7b8493]">Convert instantly between compatible units.</p>
     <label className="mt-6 sm:mt-8 block text-sm text-[#d9dee7]">Category<select value={category} onChange={(e) => changeCategory(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white">{Object.keys(DATA).map((key) => <option key={key} value={key}>{TITLES[key]}</option>)}</select></label>
     <div className="mt-4 sm:mt-5 grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
