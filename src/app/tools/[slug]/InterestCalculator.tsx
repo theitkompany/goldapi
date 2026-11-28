@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
+import ToolShell from "@/components/ToolShell";
 
 const numberFormat = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
 const frequencyOptions = [
@@ -40,42 +40,117 @@ export default function InterestCalculator() {
   }, [principal, rate, time, timeUnit, frequency, mode]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-5 sm:py-10 text-white">
-      <section className="w-full max-w-2xl rounded-2xl sm:rounded-3xl border border-white/10 bg-black/45 p-5 sm:p-8 backdrop-blur-2xl shadow-[0_28px_80px_rgba(0,0,0,0.35)]">
-        <Link href="/" className="text-sm text-[#b7f34b] hover:underline">← All tools</Link>
-        <span className="mt-6 sm:mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Financial</span>
-        <h1 className="mt-3 sm:mt-4 text-2xl sm:text-3xl font-bold">Interest Calculator</h1>
-        <p className="mt-2 text-sm text-[#7b8493]">Compare simple and compound interest with Indian-number formatting.</p>
-        <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-5 sm:grid-cols-2">
-          <label className="text-sm text-[#d9dee7]">Calculation mode
-            <select value={mode} onChange={(e) => setMode(e.target.value as "simple" | "compound")} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white">
-              <option value="simple">Simple interest</option><option value="compound">Compound interest</option>
-            </select>
+    <ToolShell subtitle="Simple & Compound Interest" accent="green">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <span className="bg-accent-badge text-accent-primary inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]">
+            Financial
+          </span>
+          <h1 className="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-foreground">Interest Calculator</h1>
+          <p className="mt-1.5 text-xs sm:text-sm text-muted">
+            Compare simple and compound interest with Indian-number formatting.
+          </p>
+        </div>
+
+        <div className="glass-subcard flex items-center gap-1.5 rounded-2xl p-1.5">
+          {(["simple", "compound"] as const).map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => setMode(item)}
+              className={`rounded-xl px-3.5 py-2 text-xs sm:text-sm font-semibold capitalize transition ${
+                mode === item
+                  ? "bg-[#b7f34b] text-[#101318]"
+                  : "text-foreground hover:bg-surface-hover"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="glass-subcard mt-6 rounded-2xl p-4 sm:p-5">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="text-xs font-medium text-muted">
+            Principal (₹)
+            <input
+              type="number"
+              min="0"
+              step="any"
+              value={principal}
+              onChange={(e) => setPrincipal(e.target.value)}
+              className="theme-input mt-1.5 w-full rounded-xl px-4 py-3 text-base font-semibold outline-none transition focus:border-[#b7f34b]"
+            />
           </label>
-          <label className="text-sm text-[#d9dee7]">Principal (₹)
-            <input type="number" min="0" step="any" value={principal} onChange={(e) => setPrincipal(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white outline-none focus:border-[#b7f34b]" />
-          </label>
-          <label className="text-sm text-[#d9dee7]">Annual interest rate (%)
-            <input type="number" min="0" max="100" step="any" value={rate} onChange={(e) => setRate(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white outline-none focus:border-[#b7f34b]" />
+          <label className="text-xs font-medium text-muted">
+            Annual interest rate (%)
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="any"
+              value={rate}
+              onChange={(e) => setRate(e.target.value)}
+              className="theme-input mt-1.5 w-full rounded-xl px-4 py-3 text-base font-semibold outline-none transition focus:border-[#b7f34b]"
+            />
           </label>
           <div className="grid grid-cols-2 gap-3">
-            <label className="text-sm text-[#d9dee7]">Duration
-              <input type="number" min="0" step="any" value={time} onChange={(e) => setTime(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white outline-none focus:border-[#b7f34b]" />
+            <label className="text-xs font-medium text-muted">
+              Duration
+              <input
+                type="number"
+                min="0"
+                step="any"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                className="theme-input mt-1.5 w-full rounded-xl px-4 py-3 text-base font-semibold outline-none transition focus:border-[#b7f34b]"
+              />
             </label>
-            <label className="text-sm text-[#d9dee7]">Time unit
-              <select value={timeUnit} onChange={(e) => setTimeUnit(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-3 py-3 text-white"><option value="years">Years</option><option value="months">Months</option><option value="days">Days</option></select>
+            <label className="text-xs font-medium text-muted">
+              Time unit
+              <select
+                value={timeUnit}
+                onChange={(e) => setTimeUnit(e.target.value)}
+                className="theme-select mt-1.5 w-full rounded-xl px-3 py-3 text-base font-medium outline-none transition focus:border-[#b7f34b]"
+              >
+                <option value="years">Years</option>
+                <option value="months">Months</option>
+                <option value="days">Days</option>
+              </select>
             </label>
           </div>
-          {mode === "compound" ? <label className="text-sm text-[#d9dee7]">Compounding frequency
-            <select value={frequency} onChange={(e) => setFrequency(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white">{frequencyOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>
-          </label> : <div />}
+          {mode === "compound" ? (
+            <label className="text-xs font-medium text-muted">
+              Compounding frequency
+              <select
+                value={frequency}
+                onChange={(e) => setFrequency(e.target.value)}
+                className="theme-select mt-1.5 w-full rounded-xl px-4 py-3 text-base font-medium outline-none transition focus:border-[#b7f34b]"
+              >
+                {frequencyOptions.map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
         </div>
-        {result.error ? <p className="mt-5 text-sm text-red-300">{result.error}</p> : null}
-        <div className="mt-7 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-[#0b0d10] p-5"><p className="text-sm text-[#7b8493]">Interest earned</p><p className="mt-2 text-2xl font-bold text-[#b7f34b]">{money(result.interest)}</p></div>
-          <div className="rounded-2xl border border-white/10 bg-[#0b0d10] p-5"><p className="text-sm text-[#7b8493]">Total amount</p><p className="mt-2 text-2xl font-bold text-[#b7f34b]">{money(result.total)}</p></div>
+      </div>
+
+      {result.error ? <p className="mt-4 text-sm text-red-400">{result.error}</p> : null}
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="glass-subcard rounded-2xl p-4 sm:p-5">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted">Interest earned</p>
+          <p className="mt-2 text-2xl sm:text-3xl font-bold text-accent-primary">{money(result.interest)}</p>
         </div>
-      </section>
-    </main>
+        <div className="glass-subcard rounded-2xl p-4 sm:p-5">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted">Total amount</p>
+          <p className="mt-2 text-2xl sm:text-3xl font-bold text-foreground">{money(result.total)}</p>
+        </div>
+      </div>
+    </ToolShell>
   );
 }

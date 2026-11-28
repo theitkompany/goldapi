@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
+import ToolShell from "@/components/ToolShell";
 
 type Unit = { label: string; factor?: number; offset?: number };
 type Category = { label: string; units: Record<string, Unit>; convert?: (value: number, from: string, to: string) => number };
@@ -37,31 +37,111 @@ export default function UnitConverter() {
   const [from, setFrom] = useState("m");
   const [to, setTo] = useState("ft");
   const [value, setValue] = useState("1");
+
   const result = useMemo(() => {
     const n = Number(value);
     if (!Number.isFinite(n) || !Number.isFinite(DATA[category].convert ? DATA[category].convert!(n, from, to) : n * (units[from].factor! / units[to].factor!))) return "—";
     const converted = DATA[category].convert ? DATA[category].convert(n, from, to) : n * (units[from].factor! / units[to].factor!);
     return format.format(converted);
   }, [category, from, to, value, units]);
-  const changeCategory = (next: string) => { setCategory(next); const nextUnits = Object.keys(DATA[next].units); setFrom(nextUnits[0]); setTo(nextUnits[1] ?? nextUnits[0]); };
+
+  const changeCategory = (next: string) => {
+    setCategory(next);
+    const nextUnits = Object.keys(DATA[next].units);
+    setFrom(nextUnits[0]);
+    setTo(nextUnits[1] ?? nextUnits[0]);
+  };
   const swap = () => { setFrom(to); setTo(from); };
   const clear = () => setValue("");
 
-  return <main className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-5 sm:py-10 text-white"><section className="w-full max-w-2xl rounded-2xl sm:rounded-3xl border border-white/10 bg-black/45 p-5 sm:p-8 backdrop-blur-2xl shadow-[0_28px_80px_rgba(0,0,0,0.35)]">
-    <Link href="/" className="text-sm text-[#b7f34b] hover:underline">← All tools</Link><span className="mt-8 inline-flex rounded-full bg-[#1b3020] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b7f34b]">Utilities</span><h1 className="mt-4 text-2xl sm:text-3xl font-bold">Unit Converter</h1><p className="mt-2 text-sm text-[#7b8493]">Convert instantly between compatible units.</p>
-    <label className="mt-6 sm:mt-8 block text-sm text-[#d9dee7]">Category<select value={category} onChange={(e) => changeCategory(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white">{Object.keys(DATA).map((key) => <option key={key} value={key}>{TITLES[key]}</option>)}</select></label>
-    <div className="mt-4 sm:mt-5 grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
-      <label className="text-sm text-[#d9dee7]">From<select value={from} onChange={(e) => setFrom(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-3 py-3 text-white">{Object.entries(units).map(([key, unit]) => <option key={key} value={key}>{unit.label} ({key})</option>)}</select></label>
-      <div className="flex justify-center sm:block">
-        <button type="button" onClick={swap} className="rounded-xl border border-white/10 px-4 py-2 sm:py-3 text-[#b7f34b] hover:bg-white/5 transition" aria-label="Swap units">
-          <span className="sm:hidden">⇅ Swap</span>
-          <span className="hidden sm:inline">⇄</span>
+  return (
+    <ToolShell subtitle="Unit & Measurement Converter" accent="green">
+      <div>
+        <span className="bg-accent-badge text-accent-primary inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]">
+          Utilities
+        </span>
+        <h1 className="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-foreground">Unit Converter</h1>
+        <p className="mt-1.5 text-xs sm:text-sm text-muted">Convert instantly between compatible units.</p>
+      </div>
+
+      <div className="glass-subcard mt-6 rounded-2xl p-4 sm:p-5">
+        <label className="block text-xs font-medium text-muted">
+          Category
+          <select
+            value={category}
+            onChange={(e) => changeCategory(e.target.value)}
+            className="theme-select mt-1.5 w-full rounded-xl px-4 py-3 text-sm sm:text-base font-medium outline-none transition focus:border-[#b7f34b]"
+          >
+            {Object.keys(DATA).map((key) => (
+              <option key={key} value={key}>{TITLES[key]}</option>
+            ))}
+          </select>
+        </label>
+
+        <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
+          <label className="text-xs font-medium text-muted">
+            From
+            <select
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className="theme-select mt-1.5 w-full rounded-xl px-3.5 py-3 text-sm sm:text-base font-medium outline-none transition focus:border-[#b7f34b]"
+            >
+              {Object.entries(units).map(([key, unit]) => (
+                <option key={key} value={key}>{unit.label} ({key})</option>
+              ))}
+            </select>
+          </label>
+          <div className="flex justify-center sm:block">
+            <button
+              type="button"
+              onClick={swap}
+              className="theme-toggle-btn w-full sm:w-auto rounded-xl border px-4 py-2.5 sm:py-3 text-sm font-semibold text-accent-primary transition"
+              aria-label="Swap units"
+            >
+              <span className="sm:hidden">⇅ Swap</span>
+              <span className="hidden sm:inline">⇄</span>
+            </button>
+          </div>
+          <label className="text-xs font-medium text-muted">
+            To
+            <select
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              className="theme-select mt-1.5 w-full rounded-xl px-3.5 py-3 text-sm sm:text-base font-medium outline-none transition focus:border-[#b7f34b]"
+            >
+              {Object.entries(units).map(([key, unit]) => (
+                <option key={key} value={key}>{unit.label} ({key})</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <label className="mt-4 block text-xs font-medium text-muted">
+          Value
+          <input
+            type="number"
+            step="any"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            className="theme-input mt-1.5 w-full rounded-xl px-4 py-3 text-xl font-semibold outline-none transition focus:border-[#b7f34b]"
+          />
+        </label>
+
+        <div className="mt-5 rounded-xl border border-[#b7f34b]/25 bg-[#b7f34b]/[0.08] p-4 sm:p-5">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted">Result</p>
+          <p className="mt-1.5 break-words text-3xl sm:text-4xl font-bold text-accent-primary">
+            {result} <span className="text-base font-medium text-muted">{to}</span>
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={clear}
+          className="theme-toggle-btn mt-4 rounded-xl border px-4 py-2 text-xs font-semibold transition"
+        >
+          Clear
         </button>
       </div>
-      <label className="text-sm text-[#d9dee7]">To<select value={to} onChange={(e) => setTo(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-3 py-3 text-white">{Object.entries(units).map(([key, unit]) => <option key={key} value={key}>{unit.label} ({key})</option>)}</select></label>
-    </div>
-    <label className="mt-4 sm:mt-5 block text-sm text-[#d9dee7]">Value<input type="number" step="any" value={value} onChange={(e) => setValue(e.target.value)} className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-lg text-white outline-none focus:border-[#b7f34b]" /></label>
-    <div className="mt-5 rounded-2xl border border-white/10 bg-[#0b0d10] p-4 sm:p-5"><p className="text-sm text-[#7b8493]">Result</p><p className="mt-2 break-words text-2xl sm:text-3xl font-bold text-[#b7f34b]">{result} <span className="text-base font-medium text-[#9ba3af]">{to}</span></p></div>
-    <button type="button" onClick={clear} className="mt-5 rounded-xl border border-white/10 px-4 py-2 text-sm text-[#d9dee7] hover:bg-white/5">Clear</button>
-  </section></main>;
+    </ToolShell>
+  );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "@/app/globals.css";
 import GrainientBackground from "@/components/GrainientBackground";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Golden Api",
@@ -27,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="relative min-h-screen bg-background text-foreground antialiased">
-        <GrainientBackground />
-        <div className="relative z-10 min-h-screen">{children}</div>
+        <ThemeProvider>
+          <GrainientBackground />
+          <div className="relative z-10 min-h-screen">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );

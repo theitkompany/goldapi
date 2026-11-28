@@ -1,8 +1,12 @@
 "use client";
 
 import Grainient from "@/components/Grainient";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function GrainientBackground() {
+  const { theme } = useTheme();
+  const isLight = theme === "light";
+
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
       <Grainient
@@ -18,9 +22,14 @@ export default function GrainientBackground() {
         interactive={true}
         stir={0.8}
         clickSwirl={true}
+        lightMode={isLight}
         style={{ width: "100%", height: "100%" }}
       />
-      <div className="absolute inset-0 bg-[#050806]/55" />
+      <div
+        className={`absolute inset-0 transition-colors duration-300 ${
+          isLight ? "bg-white/45" : "bg-[#050806]/55"
+        }`}
+      />
     </div>
   );
 }

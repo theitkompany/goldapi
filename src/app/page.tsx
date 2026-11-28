@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import Dock from "@/components/Dock";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const UPI_ID = "saveen.salah@federal";
 const TOOLS = [
@@ -50,53 +51,49 @@ export default function HomePage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden text-[#edf8df]">
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-24 sm:px-8 sm:pb-28 lg:px-12">
-        <header className="flex items-center justify-between py-3 sm:py-6">
+    <main className="relative min-h-screen overflow-hidden text-foreground">
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-24 sm:px-8 sm:pt-8 sm:pb-28 lg:px-12 lg:pt-12">
+        <header className="flex items-center justify-between gap-3 py-3 sm:py-5">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#b7f34b]">Golden API</p>
-            <h1 className="mt-1 text-xl font-bold tracking-tight text-[#edf8df] sm:text-3xl">Simple Tools. Instant Conversions.</h1>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-accent-primary">Golden API</p>
+            <h1 className="mt-1 text-xl font-bold tracking-tight text-foreground sm:text-3xl">Simple Tools. Instant Conversions.</h1>
           </div>
+          <ThemeToggle />
         </header>
 
         {activeTab === "Home" ? (
           <>
             <div className="relative z-10 flex items-end justify-between pt-2 sm:pt-4">
               <div>
-                <p className="text-xs sm:text-sm text-[#9db59b]">Everything you need,</p>
-                <p className="mt-0.5 sm:mt-1 text-base sm:text-lg font-semibold text-[#edf8df]">all in one place.</p>
+                <p className="text-xs sm:text-sm text-muted">Everything you need,</p>
+                <p className="mt-0.5 sm:mt-1 text-base sm:text-lg font-semibold text-foreground">all in one place.</p>
               </div>
-              <span className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-xs text-[#b8cdb7]">{TOOLS.length} tools</span>
+              <span className="glass-subcard rounded-full px-2.5 py-1 text-xs text-muted">{TOOLS.length} tools</span>
             </div>
             <label htmlFor="tool-search" className="sr-only">Search tools</label>
             <input
               id="tool-search"
               placeholder="Search tools and calculators..."
               onChange={(event) => setSearchQuery(event.target.value)}
-              className="relative z-10 mt-4 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white outline-none placeholder:text-[#9db59b] focus:border-[#b7f34b]"
+              className="theme-input relative z-10 mt-4 w-full rounded-2xl px-4 py-3 text-sm outline-none placeholder:text-muted focus:border-[#b7f34b]"
             />
             <section className="relative z-10 mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3" aria-label="Available tools">
-              {TOOLS.filter(([, title, description, category]) => `${title} ${description} ${category}`.toLowerCase().includes(searchQuery.toLowerCase())).map(([id, title, description, category, icon, href]) => (
+              {TOOLS.filter(([, title, description, category]) => `${title} ${description} ${category}`.toLowerCase().includes(searchQuery.toLowerCase())).map(([id, title, description, , icon, href]) => (
                 <Link
                   key={id}
                   href={href}
-                  className="group relative flex items-center gap-3.5 rounded-2xl border border-white/10 bg-white/10 p-3.5 transition hover:border-[#b7f34b]/50 hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b] sm:min-h-[148px] sm:flex-col sm:items-center sm:justify-center sm:p-5 sm:text-center sm:gap-2.5"
+                  className="glass-card group relative flex items-center gap-3.5 rounded-2xl p-3.5 transition hover:border-[#b7f34b]/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b7f34b] sm:min-h-[148px] sm:flex-col sm:items-center sm:justify-center sm:p-5 sm:text-center sm:gap-2.5"
                 >
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#315c35] text-lg font-bold text-[#dcefc1] transition group-hover:scale-105 sm:h-12 sm:w-12 sm:text-xl">
                     {icon}
                   </span>
                   <div className="flex min-w-0 flex-1 flex-col sm:items-center">
-                    <div className="flex flex-wrap items-center gap-2 sm:justify-center">
-                      <span className="font-semibold text-sm sm:text-base text-[#edf8df]">{title}</span>
-                      <span className="inline-flex rounded-md bg-[#c3dfa8] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#315c35]">
-                        {category}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-[#b8cdb7] sm:text-sm sm:max-w-[260px] leading-relaxed">
+                    <span className="font-semibold text-sm sm:text-base text-foreground">{title}</span>
+                    <p className="mt-1 text-xs text-muted sm:text-sm sm:max-w-[260px] leading-relaxed">
                       {description}
                     </p>
                   </div>
-                  <span aria-hidden="true" className="shrink-0 text-xl font-light text-[#b8cdb7] transition group-hover:text-[#b7f34b] group-hover:translate-x-0.5 sm:absolute sm:right-3.5 sm:top-1/2 sm:-translate-y-1/2 sm:text-2xl">
+                  <span aria-hidden="true" className="shrink-0 text-xl font-light text-muted transition group-hover:text-accent-primary group-hover:translate-x-0.5 sm:absolute sm:right-3.5 sm:top-1/2 sm:-translate-y-1/2 sm:text-2xl">
                     ›
                   </span>
                 </Link>
@@ -104,25 +101,61 @@ export default function HomePage() {
             </section>
           </>
         ) : (
-          <section className="mx-auto mt-6 w-full max-w-xl rounded-2xl border border-white/[0.08] bg-[#101318] p-5 sm:mt-10 sm:rounded-3xl sm:p-8" aria-labelledby="about-title">
-            <h2 id="about-title" className="text-xl sm:text-2xl font-bold">About Golden API</h2>
-            <p className="mt-3 text-sm leading-6 text-[#7b8493]">Golden API brings live precious-metal prices and practical calculators into one simple toolkit for everyday decisions.</p>
-            <div className="mt-8 border-t border-white/10 pt-6">
-              <h3 className="text-lg font-semibold">Support / Donate</h3>
-              <p className="mt-2 text-sm leading-6 text-[#7b8493]">Support continued development through a secure UPI donation.</p>
+          <section className="glass-card mx-auto mt-6 w-full max-w-xl rounded-2xl p-5 sm:mt-10 sm:rounded-3xl sm:p-8" aria-labelledby="about-title">
+            <h2 id="about-title" className="text-xl sm:text-2xl font-bold text-foreground">About Golden API</h2>
+            <p className="mt-3 text-sm leading-6 text-muted">Golden API brings live precious-metal prices and practical calculators into one simple toolkit for everyday decisions.</p>
+            <div className="mt-8 border-t border-border pt-6">
+              <h3 className="text-lg font-semibold text-foreground">Support / Donate</h3>
+              <p className="mt-2 text-sm leading-6 text-muted">Support continued development through a secure UPI donation.</p>
               <div className="mt-5 grid grid-cols-4 gap-2">
-                {["10", "25", "50", "100"].map((preset) => <button key={preset} type="button" onClick={() => { setSelectedDonation(preset); setCustomDonation(""); }} className={`rounded-xl border px-3 py-2 text-sm font-semibold ${selectedDonation === preset && !customDonation ? "border-[#b7f34b] bg-[#1b3020] text-[#b7f34b]" : "border-white/10 bg-[#0b0d10] text-[#d9dee7]"}`}>₹{preset}</button>)}
+                {["10", "25", "50", "100"].map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => { setSelectedDonation(preset); setCustomDonation(""); }}
+                    className={`rounded-xl border px-3 py-2 text-sm font-semibold transition ${
+                      selectedDonation === preset && !customDonation
+                        ? "border-[#b7f34b] bg-[#1b3020] text-[#b7f34b]"
+                        : "glass-subcard text-foreground"
+                    }`}
+                  >
+                    ₹{preset}
+                  </button>
+                ))}
               </div>
-              <label htmlFor="custom-donation" className="mt-5 block text-sm font-medium text-[#d9dee7]">Custom amount (INR)</label>
-              <input id="custom-donation" inputMode="decimal" min="1" step="0.01" type="number" value={customDonation} onChange={(event) => setCustomDonation(event.target.value)} placeholder="Enter a positive amount" className="mt-2 w-full rounded-xl border border-white/10 bg-[#161a20] px-4 py-3 text-white outline-none focus:border-[#b7f34b]" />
-              <a aria-disabled={!validDonation} href={validDonation ? upiLink : undefined} className={`mt-5 flex w-full items-center justify-center rounded-xl px-5 py-3 font-bold ${validDonation ? "bg-[#b7f34b] text-[#101318]" : "cursor-not-allowed bg-[#273126] text-[#72806b]"}`}>Donate / Pay with UPI</a>
+              <label htmlFor="custom-donation" className="mt-5 block text-sm font-medium text-foreground">Custom amount (INR)</label>
+              <input
+                id="custom-donation"
+                inputMode="decimal"
+                min="1"
+                step="0.01"
+                type="number"
+                value={customDonation}
+                onChange={(event) => setCustomDonation(event.target.value)}
+                placeholder="Enter a positive amount"
+                className="theme-input mt-2 w-full rounded-xl px-4 py-3 outline-none focus:border-[#b7f34b]"
+              />
+              <a
+                aria-disabled={!validDonation}
+                href={validDonation ? upiLink : undefined}
+                className={`mt-5 flex w-full items-center justify-center rounded-xl px-5 py-3 font-bold ${
+                  validDonation ? "bg-[#b7f34b] text-[#101318]" : "cursor-not-allowed bg-[#273126] text-[#72806b]"
+                }`}
+              >
+                Donate / Pay with UPI
+              </a>
               <div className="mt-6 flex flex-col gap-4 sm:grid sm:grid-cols-[1fr_auto]">
-                <div><p className="text-xs uppercase tracking-wide text-[#697281]">UPI ID fallback</p><p className="mt-1 break-all font-mono text-sm text-[#b7f34b]">{UPI_ID}</p><button type="button" onClick={() => copyText(UPI_ID, "id")} className="mt-2 text-xs font-semibold text-[#d9dee7]">{copied === "id" ? "Copied" : "Copy UPI ID"}</button><button type="button" onClick={() => copyText(upiLink, "uri")} className="ml-4 mt-2 text-xs font-semibold text-[#d9dee7]">{copied === "uri" ? "Copied" : "Copy payment link"}</button></div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-muted">UPI ID fallback</p>
+                  <p className="mt-1 break-all font-mono text-sm text-accent-primary">{UPI_ID}</p>
+                  <button type="button" onClick={() => copyText(UPI_ID, "id")} className="mt-2 text-xs font-semibold text-foreground">{copied === "id" ? "Copied" : "Copy UPI ID"}</button>
+                  <button type="button" onClick={() => copyText(upiLink, "uri")} className="ml-4 mt-2 text-xs font-semibold text-foreground">{copied === "uri" ? "Copied" : "Copy payment link"}</button>
+                </div>
                 <div className="flex justify-center sm:justify-end">
                   <img src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(upiLink)}`} alt="QR code for selected UPI donation" width="140" height="140" className="rounded-lg bg-white p-2" />
                 </div>
               </div>
-              <p className="mt-4 text-xs leading-5 text-[#697281]">Opening a UPI app only starts the payment. Confirm the transaction inside your UPI app; this website does not claim payment success.</p>
+              <p className="mt-4 text-xs leading-5 text-muted">Opening a UPI app only starts the payment. Confirm the transaction inside your UPI app; this website does not claim payment success.</p>
             </div>
           </section>
         )}
